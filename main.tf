@@ -26,8 +26,14 @@ terraform {
     storage_account_name    = "tfstorageaccount"
     container_name          = "tfstate"
     key                     = "terraform.tfstate"
-  }
-  
+  }  
+}
+
+#Defining a variable. The variable gets its value from azure-pipelines.yml. In that file, the variable name needs to be prepended "TF_VAR_"
+#Variables could also be defined in its own file.
+variable "imagebuild" {
+  type        = string
+  description = "Latest Image Build"
 }
 
 
@@ -47,7 +53,7 @@ resource "azurerm_container_group" "tfcg_test" {
 
     container {
         name = "weatherapi"
-        image = "krissolh/weatherapi"
+        image = "krissolh/weatherapi:${var.imagebuild}" #Using image build variable for referencing which version to use. TF needs to see something change.
         cpu = "1"
         memory = "1"
 
