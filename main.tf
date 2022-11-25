@@ -1,15 +1,33 @@
+# terraform {
+#   required_providers {
+#     azurerm = {
+#       source = "hashicorp/azurerm"
+#       version = "3.0.0"
+#     }
+#   }
+# }
+
+provider "azurerm" {
+  # Configuration options  
+  features {}  
+}
+
+
+#Storing state file, to persist the file
 terraform {
-  required_providers {
-    azurerm = {
+  required_providers{
+  azurerm = {
       source = "hashicorp/azurerm"
       version = "3.0.0"
     }
   }
-}
-
-provider "azurerm" {
-  # Configuration options
-  features {}  
+  backend "azurerm" {
+    resource_group_name     = "tf_rg_blobstore"
+    storage_account_name    = "tfstorageaccount"
+    container_name          = "tfstate"
+    key                     = "terraform.tfstate"
+  }
+  
 }
 
 
